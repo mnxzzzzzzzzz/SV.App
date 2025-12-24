@@ -1,18 +1,20 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type ReferralCardProps = {
   friendsReferred: number;
   totalFriends: number;
+  onPress: () => void;
 };
 
 export default function ReferralCard({
   friendsReferred,
   totalFriends,
+  onPress,
 }: ReferralCardProps) {
   const progress = (friendsReferred / totalFriends) * 100;
 
   return (
-    <View style={styles.card}>
+    <Pressable style={styles.card} onPress={onPress}>
       <Text style={styles.title}>🎯 REFER FRIENDS, EARN REWARDS</Text>
 
       <View style={styles.progressContainer}>
@@ -27,7 +29,7 @@ export default function ReferralCard({
       <Text style={styles.referralText}>
         {friendsReferred}/{totalFriends} friends referred
       </Text>
-    </View>
+    </Pressable>
   );
 }
 
