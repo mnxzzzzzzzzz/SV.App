@@ -35,8 +35,10 @@ export default function TopPicksCarousel({
             onPress={() => onPress(item)}
           >
             <Text style={styles.icon}>{item.icon}</Text>
-            <Text style={styles.cardTitle}>TOP</Text>
-            <Text style={styles.cardSubtitle}>PICK</Text>
+            <View style={styles.badgeContainer}>
+              <Text style={styles.cardTitle}>TOP</Text>
+              <Text style={styles.cardSubtitle}>PICK</Text>
+            </View>
             <Text style={styles.cardName}>{item.name}</Text>
           </Pressable>
         )}
@@ -77,22 +79,29 @@ const styles = StyleSheet.create({
     fontSize: 28,
     marginBottom: 8,
   },
+  badgeContainer: {
+    backgroundColor: "#FFB800",
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 6,
+    alignItems: "center",
+  },
   cardTitle: {
     fontSize: 11,
     fontWeight: "700",
-    color: "#FFFFFF",
+    color: "#000000",
     letterSpacing: 0.5,
   },
   cardSubtitle: {
     fontSize: 11,
     fontWeight: "700",
-    color: "#2962FF",
+    color: "#000000",
     letterSpacing: 0.5,
   },
   cardName: {
     fontSize: 10,
     color: "#B0B3C7",
-    marginTop: 6,
+    marginTop: 8,
     textAlign: "center",
   },
 });
