@@ -1,96 +1,125 @@
-import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    Pressable,
-    StyleSheet,
-    Text,
-    View
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 import { useAuth } from "../src/contexts/AuthContext";
 
 export default function WaitlistScreen() {
-  const { checkAccess, approveAccess, userEmail } = useAuth();
+  const { userEmail, checkAccess, approveAccess } = useAuth();
+  const [queuePosition, setQueuePosition] = useState(124);
+  const [estimatedTime, setEstimatedTime] = useState("Tomorrow 2 PM");
+  const [notificationEnabled, setNotificationEnabled] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
 
   const handleCheckAccess = async () => {
     setIsChecking(true);
     const hasAccess = await checkAccess();
     setIsChecking(false);
-    
+
     if (hasAccess) {
-      Alert.alert(
-        "Access Granted! 🎉",
-        "You now have full access to StudentVerse.",
-        [{ text: "Go to Home", onPress: () => router.replace("/home") }]
-      );
+      approveAccess();
     } else {
-      Alert.alert(
-        "Still on Waitlist",
-        "We'll notify you when access is enabled.",
-        [{ text: "OK" }]
-      );
+      alert("Still processing your verification. Check back soon!");
     }
   };
 
-  const handleDemoApprove = () => {
-    Alert.alert(
-      "Demo: Approve Access",
-      "This simulates backend approving your access.",
-      [
-        { text: "Cancel", style: "cancel" },
-        { 
-          text: "Approve", 
-          onPress: () => {
-            approveAccess();
-            setTimeout(() => router.replace("/home"), 500);
-          }
-        }
-      ]
-    );
-  };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>You're on the waitlist 🎉</Text>
-      
-      <Text style={styles.email}>{userEmail}</Text>
-      
-      <Text style={styles.text}>
-        We're verifying your student status. This usually takes 24-48 hours.
-      </Text>
-      
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>What happens next?</Text>
-        <Text style={styles.cardText}>• Email verification</Text>
-        <Text style={styles.cardText}>• University confirmation</Text>
-        <Text style={styles.cardText}>• Access activation</Text>
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
+      <View style={styles.headerSection}>
+        <Text style={styles.headerEmoji}>🎉</Text>
+        <Text style={styles.headerText}>You're on the waitlist!</Text>
       </View>
 
-      <Pressable 
-        style={[styles.button, isChecking && styles.buttonDisabled]} 
+      {/* Email */}
+      <View style={styles.emailSection}>
+        <Text style={styles.emailText}>{userEmail}</Text>
+      </View>
+
+      {/* Verification Message */}
+      <View style={styles.verificationSection}>
+        <Text style={styles.verificationTitle}>
+          We're verifying your student status.
+        </Text>
+        <Text style={styles.verificationSubtitle}>
+          This usually takes 24-48 hours.
+        </Text>
+      </View>
+
+      {/* What Happens Next */}
+      <View style={styles.stepsCard}>
+        <Text style={styles.stepsTitle}>📋 What happens next:</Text>
+        <View style={styles.stepItem}>
+          <Text style={styles.stepBullet}>•</Text>
+          <Text style={styles.stepText}>Email verification</Text>
+        </View>
+        <View style={styles.stepItem}>
+          <Text style={styles.stepBullet}>•</Text>
+          <Text style={styles.stepText}>University confirmation</Text>
+        </View>
+        <View style={styles.stepItem}>
+          <Text style={styles.stepBullet}>•</Text>
+          <Text style={styles.stepText}>Access activation</Text>
+        </View>
+      </View>
+
+      {/* Queue Position & Estimate */}
+      <View style={styles.queueCard}>
+        <View style={styles.queueItem}>
+          <Text style={styles.queueLabel}>🎓 Students ahead of you</Text>
+          <Text style={styles.queueValue}>{queuePosition}</Text>
+        </View>
+        <View style={styles.dividerLine} />
+        <View style={styles.queueItem}>
+          <Text style={styles.queueLabel}>🕐 Estimated access time</Text>
+          <Text style={styles.queueValue}>{estimatedTime}</Text>
+        </View>
+      </View>
+
+      {/* Check Status Button */}
+      <Pressable
+        style={[styles.checkButton, isChecking && styles.checkButtonLoading]}
         onPress={handleCheckAccess}
         disabled={isChecking}
       >
-        {isChecking ? (
-          <ActivityIndicator color="#FFFFFF" />
-        ) : (
-          <Text style={styles.buttonText}>Check access status</Text>
-        )}
+        <Text style={styles.checkButtonText}>
+          {isChecking ? "Checking..." : "Check access status"}
+        </Text>
       </Pressable>
-      
-      <Pressable 
-        style={styles.demoButton}
-        onPress={handleDemoApprove}
-      >
-        <Text style={styles.demoButtonText}>[Demo: Approve Access]</Text>
-      </Pressable>
-      
-      <Text style={styles.note}>
-        Once approved, you'll see nearby student offers instantly.
-      </Text>
-    </View>
+
+      {/* Notification Toggle */}
+      <View style={styles.notificationSection}>
+        <View style={styles.notificationLabel}>
+          <Text style={styles.notificationIcon}>📧</Text>
+          <Text style={styles.notificationText}>Notify me when ready</Text>
+        </View>
+        <Pressable
+          style={[
+            styles.toggle,
+            notificationEnabled && styles.toggleEnabled,
+          ]}
+          onPress={() => setNotificationEnabled(!notificationEnabled)}
+        >
+          <View
+            style={[
+              styles.toggleThumb,
+              notificationEnabled && styles.toggleThumbEnabled,
+            ]}
+          />
+        </Pressable>
+      </View>
+
+      {/* Info Footer */}
+      <View style={styles.infoFooter}>
+        <Text style={styles.infoText}>
+          💡 Pro tip: Check your email regularly. We'll send you updates!
+        </Text>
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -98,78 +127,175 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#080C1F",
-    padding: 24,
-    justifyContent: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
-  title: {
-    fontSize: 28,
-    color: "#FFFFFF",
-    fontWeight: "700",
+  headerSection: {
+    alignItems: "center",
+    marginVertical: 20,
+  },
+  headerEmoji: {
+    fontSize: 40,
     marginBottom: 8,
-    textAlign: "center",
   },
-  email: {
-    fontSize: 14,
-    color: "#B0B3C7",
-    textAlign: "center",
-    marginBottom: 30,
+  headerText: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#FFFFFF",
   },
-  text: {
-    fontSize: 16,
-    color: "#B0B3C7",
-    textAlign: "center",
-    marginBottom: 30,
-    lineHeight: 22,
-  },
-  card: {
+  emailSection: {
     backgroundColor: "#101534",
-    padding: 20,
-    borderRadius: 14,
-    marginBottom: 30,
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    marginBottom: 20,
+    alignItems: "center",
   },
-  cardTitle: {
-    fontSize: 16,
-    color: "#FFFFFF",
-    fontWeight: "600",
-    marginBottom: 12,
-  },
-  cardText: {
+  emailText: {
     fontSize: 14,
     color: "#B0B3C7",
-    marginBottom: 6,
   },
-  button: {
-    backgroundColor: "#2962FF",
-    padding: 16,
-    borderRadius: 10,
-    alignItems: "center",
-    marginBottom: 12,
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  demoButton: {
-    borderWidth: 1,
-    borderColor: "#FFB800",
-    padding: 12,
-    borderRadius: 10,
-    alignItems: "center",
+  verificationSection: {
     marginBottom: 20,
   },
-  demoButtonText: {
-    color: "#FFB800",
+  verificationTitle: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#FFFFFF",
+    marginBottom: 4,
+  },
+  verificationSubtitle: {
+    fontSize: 13,
+    color: "#B0B3C7",
+    lineHeight: 19,
+  },
+  stepsCard: {
+    backgroundColor: "#101534",
+    borderRadius: 10,
+    paddingVertical: 14,
+    paddingHorizontal: 14,
+    marginBottom: 16,
+  },
+  stepsTitle: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#FFFFFF",
+    marginBottom: 10,
+  },
+  stepItem: {
+    flexDirection: "row",
+    marginBottom: 8,
+    alignItems: "flex-start",
+  },
+  stepBullet: {
     fontSize: 14,
+    color: "#B0B3C7",
+    marginRight: 10,
+    marginTop: -2,
+  },
+  stepText: {
+    fontSize: 12,
+    color: "#B0B3C7",
+    flex: 1,
+  },
+  queueCard: {
+    backgroundColor: "#101534",
+    borderRadius: 10,
+    paddingVertical: 14,
+    paddingHorizontal: 14,
+    marginBottom: 20,
+  },
+  queueItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 8,
+  },
+  queueLabel: {
+    fontSize: 12,
+    color: "#B0B3C7",
+  },
+  queueValue: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#2962FF",
+  },
+  dividerLine: {
+    height: 1,
+    backgroundColor: "#2C3158",
+    marginVertical: 8,
+  },
+  checkButton: {
+    backgroundColor: "#2962FF",
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 10,
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  checkButtonLoading: {
+    opacity: 0.6,
+  },
+  checkButtonText: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  notificationSection: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#101534",
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    marginBottom: 20,
+  },
+  notificationLabel: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  notificationIcon: {
+    fontSize: 16,
+    marginRight: 10,
+  },
+  notificationText: {
+    fontSize: 13,
+    color: "#FFFFFF",
     fontWeight: "500",
   },
-  note: {
+  toggle: {
+    width: 44,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: "#2C3158",
+    justifyContent: "center",
+    paddingHorizontal: 2,
+  },
+  toggleEnabled: {
+    backgroundColor: "#2962FF",
+  },
+  toggleThumb: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: "#FFFFFF",
+    alignSelf: "flex-start",
+  },
+  toggleThumbEnabled: {
+    alignSelf: "flex-end",
+  },
+  infoFooter: {
+    backgroundColor: "#2C315850",
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderLeftWidth: 3,
+    borderLeftColor: "#FFB800",
+  },
+  infoText: {
     fontSize: 12,
-    color: "#8A8FB3",
-    textAlign: "center",
-    fontStyle: "italic",
+    color: "#B0B3C7",
+    lineHeight: 16,
   },
 });
