@@ -1,5 +1,5 @@
 import { router, useFocusEffect } from "expo-router";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   FlatList,
   Pressable,
@@ -12,7 +12,7 @@ import CategoryFilter from "../src/components/CategoryFilter";
 import MerchantCard from "../src/components/MerchantCard";
 import ReferralCard from "../src/components/ReferralCard";
 import TopPicksCarousel from "../src/components/TopPicksCarousel";
-import { merchants } from "../src/data/merchants/mock";
+import { merchants, Merchant } from "../src/data/merchants/mock";
 import { useAuth } from "../src/contexts/AuthContext";
 
 const CATEGORIES = [
@@ -56,9 +56,28 @@ export default function HomeScreen() {
     router.push("/qr");
   };
 
-  const handleMerchantPress = () => {
-    router.push("/qr");
+  const handleMerchantPress = (merchant: Merchant) => {
+    // Navigate to QR screen with merchant ID
+    router.push({
+      pathname: "/qr",
+      params: { merchantId: merchant.id, merchantName: merchant.name },
+    });
   };
+
+  const handleReferralPress = () => {
+    // Navigate to referral screen
+    router.push("/referral");
+  };
+
+  // Filter merchants based on selected categories
+  const filteredMerchants = useMemo(() => {
+    if (selectedCategories.length === 0) {
+      return merchants;
+    }
+    return merchants.filter((merchant) =>
+      selectedCategories.includes(merchant.category.toLowerCase())
+    );
+  }, [selectedCategories]);
 
   const headerContent = (
     <View style={styles.headerContainer}>
@@ -78,14 +97,18 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <FlatList
-        data={merchants}
+        data={filteredMerchants}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
           <>
             {headerContent}
-            <ReferralCard friendsReferred={2} totalFriends={5} />
+            <ReferralCard
+              friendsReferred={2}
+              totalFriends={5}
+              onPress={handleReferralPress}
+            />
             <TopPicksCarousel
               items={TOP_PICKS}
               onPress={handleTopPickPress}
@@ -97,7 +120,10 @@ export default function HomeScreen() {
             />
             <View style={styles.offersHeader}>
               <Text style={styles.offersTitle}>📍 NEARBY OFFERS</Text>
-              <Pressable>
+              <Pressable onPress={() => {
+                // Future: implement map view toggle
+                // router.push("/map");
+              }}>
                 <Text style={styles.mapViewText}>Map view</Text>
               </Pressable>
             </View>
@@ -106,9 +132,16 @@ export default function HomeScreen() {
         renderItem={({ item }) => (
           <MerchantCard
             merchant={item}
-            onPress={handleMerchantPress}
+            onPress={() => handleMerchantPress(item)}
           />
         )}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>
+              No offers found in selected categories
+            </Text>
+          </View>
+        }
       />
     </SafeAreaView>
   );
@@ -167,5 +200,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#2962FF",
     fontWeight: "500",
+  },
+  emptyContainer: {
+    paddingVertical: 40,
+    alignItems: "center",
+  },
+  emptyText: {
+    fontSize: 14,
+    color: "#B0B3C7",
+    textAlign: "center",
   },
 });
