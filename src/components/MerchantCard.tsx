@@ -10,12 +10,18 @@ export default function MerchantCard({ merchant, onPress }: Props) {
   return (
     <Pressable style={styles.card} onPress={onPress}>
       <View style={styles.header}>
-        <Text style={styles.name}>{merchant.name}</Text>
-        <Text style={styles.distance}>{merchant.distance}</Text>
+        <View style={styles.merchantInfo}>
+          <Text style={styles.merchantName}>{merchant.name}</Text>
+          <Text style={styles.distance}>[{merchant.distance}]</Text>
+        </View>
       </View>
 
       <Text style={styles.offer}>{merchant.offer}</Text>
       <Text style={styles.rules}>{merchant.rules}</Text>
+
+      <Pressable style={styles.button} onPress={onPress}>
+        <Text style={styles.buttonText}>USE NOW</Text>
+      </Pressable>
     </Pressable>
   );
 }
@@ -28,14 +34,18 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   header: {
+    marginBottom: 10,
+  },
+  merchantInfo: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 6,
+    alignItems: "center",
   },
-  name: {
+  merchantName: {
     fontSize: 16,
     color: "#FFFFFF",
     fontWeight: "600",
+    flex: 1,
   },
   distance: {
     fontSize: 12,
@@ -44,10 +54,24 @@ const styles = StyleSheet.create({
   offer: {
     fontSize: 14,
     color: "#FFFFFF",
-    marginBottom: 4,
+    fontWeight: "500",
+    marginBottom: 6,
   },
   rules: {
     fontSize: 12,
     color: "#8A8FB3",
+    marginBottom: 12,
+  },
+  button: {
+    backgroundColor: "#2962FF",
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 13,
+    fontWeight: "600",
   },
 });
