@@ -75,6 +75,13 @@ export default function OTPScreen() {
       <Pressable style={styles.resendButton}>
         <Text style={styles.resendText}>Resend code</Text>
       </Pressable>
+
+      <Pressable
+        style={styles.skipButton}
+        onPress={() => login("student@university.ac.ae")}
+      >
+        <Text style={styles.skipText}>⏭️ Skip for testing</Text>
+      </Pressable>
     </View>
   );
 }
