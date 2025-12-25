@@ -56,18 +56,6 @@ const styles = StyleSheet.create({
   rules: {
     fontSize: 12,
     color: "#8A8FB3",
-    marginBottom: 12,
-  },
-  button: {
-    backgroundColor: "#2962FF",
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    fontSize: 13,
-    fontWeight: "600",
+    marginBottom: 8,
   },
 });
