@@ -1,4 +1,4 @@
-import { ScrollView, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type Category = {
   id: string;
@@ -21,70 +21,104 @@ export default function CategoryFilter({
     <View style={styles.section}>
       <Text style={styles.title}>🏷️ BROWSE CATEGORIES</Text>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.chipsContainer}
-      >
-        {categories.map((category) => {
-          const isSelected = selected.includes(category.id);
-          return (
-            <Pressable
-              key={category.id}
-              style={[
-                styles.chip,
-                isSelected && styles.chipSelected,
-              ]}
-              onPress={() => onSelect(category.id)}
-            >
-              <Text
+      <View style={styles.dialContainer}>
+        <View style={styles.gridWrapper}>
+          {categories.map((category) => {
+            const isSelected = selected.includes(category.id);
+            return (
+              <Pressable
+                key={category.id}
                 style={[
-                  styles.chipText,
-                  isSelected && styles.chipTextSelected,
+                  styles.categoryButton,
+                  isSelected && styles.categoryButtonSelected,
                 ]}
+                onPress={() => onSelect(category.id)}
               >
-                {category.emoji} {category.name}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </ScrollView>
+                <View style={styles.categoryContent}>
+                  <Text style={styles.categoryEmoji}>{category.emoji}</Text>
+                  <Text
+                    style={[
+                      styles.categoryText,
+                      isSelected && styles.categoryTextSelected,
+                    ]}
+                  >
+                    {category.name}
+                  </Text>
+                </View>
+              </Pressable>
+            );
+          })}
+        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   section: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   title: {
     fontSize: 14,
     fontWeight: "700",
     color: "#FFFFFF",
-    marginBottom: 12,
+    marginBottom: 20,
     letterSpacing: 0.5,
+    fontFamily: "Helvetica",
   },
-  chipsContainer: {
-    paddingRight: 16,
+  dialContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 16,
   },
-  chip: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
+  gridWrapper: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: 12,
+    width: "100%",
+  },
+  categoryButton: {
+    width: "30%",
+    aspectRatio: 1,
+    borderRadius: 16,
+    backgroundColor: "#101534",
+    borderWidth: 2,
     borderColor: "#2C3158",
-    marginRight: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 8,
+    transition: "all 200ms ease",
   },
-  chipSelected: {
+  categoryButtonSelected: {
     backgroundColor: "#2962FF",
     borderColor: "#2962FF",
+    shadowColor: "#2962FF",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
   },
-  chipText: {
-    fontSize: 12,
+  categoryContent: {
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+  },
+  categoryEmoji: {
+    fontSize: 32,
+  },
+  categoryText: {
+    fontSize: 11,
     color: "#B0B3C7",
-    fontWeight: "500",
+    fontWeight: "600",
+    textAlign: "center",
+    fontFamily: "Helvetica",
+    letterSpacing: 0.3,
   },
-  chipTextSelected: {
+  categoryTextSelected: {
     color: "#FFFFFF",
   },
 });
