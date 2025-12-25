@@ -79,7 +79,10 @@ export default function OTPScreen() {
 
       <Pressable
         style={styles.skipButton}
-        onPress={() => login("student@university.ac.ae")}
+        onPress={() => {
+          login("student@university.ac.ae");
+          router.replace("/home");
+        }}
       >
         <Text style={styles.skipText}>⏭️ Skip for testing</Text>
       </Pressable>
