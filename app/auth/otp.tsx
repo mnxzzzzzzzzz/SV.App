@@ -141,4 +141,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: "center",
   },
+  skipButton: {
+    marginTop: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    backgroundColor: "#2C3158",
+    alignItems: "center",
+  },
+  skipText: {
+    color: "#B0B3C7",
+    fontSize: 14,
+    fontWeight: "500",
+  },
 });
