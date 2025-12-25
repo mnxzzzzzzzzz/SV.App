@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useState, useEffect } from "react";
+import { useRouter } from "expo-router";
 
 type UserStatus = "waitlisted" | "approved";
 type AuthContextType = {
