@@ -27,9 +27,10 @@ export default function OTPScreen() {
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       if (otp === "123456") {
         login("student@university.ac.ae");
+        router.replace("/home");
       } else {
         setError("Invalid OTP. Try '123456' for demo.");
       }
