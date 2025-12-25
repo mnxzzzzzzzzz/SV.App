@@ -90,15 +90,16 @@ const styles = StyleSheet.create({
   },
   categoryButtonSelected: {
     backgroundColor: "#2962FF",
-    borderColor: "#2962FF",
+    borderColor: "#FFB800",
+    borderWidth: 2,
     shadowColor: "#2962FF",
     shadowOffset: {
       width: 0,
-      height: 6,
+      height: 8,
     },
-    shadowOpacity: 0.4,
-    shadowRadius: 10,
-    elevation: 10,
+    shadowOpacity: 0.5,
+    shadowRadius: 12,
+    elevation: 12,
   },
   categoryContent: {
     alignItems: "center",
