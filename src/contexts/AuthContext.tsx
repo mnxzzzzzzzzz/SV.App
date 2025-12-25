@@ -31,8 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = (email: string) => {
     setIsAuthenticated(true);
     setUserEmail(email);
-    const immediateAccess = Math.random() > 0.5;
-    setUserStatus(immediateAccess ? "approved" : "waitlisted");
+    setUserStatus("approved");
   };
 
   const logout = () => {
