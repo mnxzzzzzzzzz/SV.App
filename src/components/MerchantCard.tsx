@@ -18,10 +18,6 @@ export default function MerchantCard({ merchant, onPress }: Props) {
 
       <Text style={styles.offer}>{merchant.offer}</Text>
       <Text style={styles.rules}>{merchant.rules}</Text>
-
-      <Pressable style={styles.button} onPress={onPress}>
-        <Text style={styles.buttonText}>USE NOW</Text>
-      </Pressable>
     </Pressable>
   );
 }
