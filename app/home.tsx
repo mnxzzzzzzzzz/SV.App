@@ -6,8 +6,10 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
+import BottomNav from "../src/components/BottomNav";
 import CategoryFilter from "../src/components/CategoryFilter";
 import MerchantCard from "../src/components/MerchantCard";
 import ReferralCard from "../src/components/ReferralCard";
