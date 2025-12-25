@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="230" height="60" viewBox="0 0 230 60"><defs id="global-defs">
+            <linearGradient id="g1"><stop offset="0%" stop-color="#00F0FF"></stop><stop offset="100%" stop-color="#2962FF"></stop></linearGradient>
+            <linearGradient id="g2"><stop offset="0%" stop-color="#7B2CBF"></stop><stop offset="100%" stop-color="#FF1744"></stop></linearGradient>
+            <linearGradient id="g3"><stop offset="0%" stop-color="#FFB800"></stop><stop offset="100%" stop-color="#FF9100"></stop></linearGradient>
+            <radialGradient id="centerGlow"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.1"></stop><stop offset="100%" stop-color="#080C1F" stop-opacity="0"></stop></radialGradient>
+        </defs><g transform="translate(0, 0)">
+                             <g style="mix-blend-mode: screen;">
+                                <rect x="7" y="7" width="35" height="17" rx="8" fill="url(#g1)" transform="rotate(45 25 25)" opacity="0.9"></rect>
+                                <rect x="7" y="22" width="35" height="17" rx="8" fill="url(#g2)" transform="rotate(-15 25 25)" opacity="0.9"></rect>
+                                <rect x="17" y="10" width="17" height="35" rx="8" fill="url(#g3)" transform="rotate(-30 25 25)" opacity="0.9"></rect>
+                            </g>
+                        </g><g transform="translate(70, 15)">
+                            <text x="50%" y="20" text-anchor="middle" font-family="'Outfit'" font-weight="700" font-size="24" fill="#fff">Student<tspan font-weight="400" fill="#94a3b8">Verse</tspan></text>
+                        </g></svg>
