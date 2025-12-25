@@ -7,6 +7,7 @@ import {
     TextInput,
     View
 } from "react-native";
+import { router } from "expo-router";
 import { useAuth } from "../../src/contexts/AuthContext";
 
 export default function OTPScreen() {
